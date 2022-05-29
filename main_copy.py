@@ -1,3 +1,4 @@
+from codecs import getencoder
 import streamlit as st
 # from multiapp import MultiApp
 import pandas as pd
@@ -59,6 +60,7 @@ def total_graph():
     train.drop(['credit_r', 'DAYS_EMPLOYED'], axis=1, inplace=True)
     train.drop('Unnamed: 0', axis=1, inplace=True)
     test = pd.read_csv(DATA_PATH + 'final_test_df.csv')
+    test = test.head(1)
     test.drop(['DAYS_EMPLOYED'], axis=1, inplace=True)
     # test = load_test(10)
     data_load_state.text("Done! (using st.cache)")
@@ -79,6 +81,9 @@ def total_graph():
                             },)
     st.plotly_chart(fig2)
 
+
+    trace1 = px.scatter(train, x="credit", y="gender", color="credit")
+    st.plotly_chart(trace1)
 
 
     if st.checkbox('Show raw data'):
