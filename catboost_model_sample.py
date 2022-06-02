@@ -99,15 +99,15 @@ def preprocessing(train, test):
     scaler = StandardScaler()
     train[numerical_feats] = scaler.fit_transform(train[numerical_feats])
     test[numerical_feats] = scaler.transform(test[numerical_feats])
-    print('categorical_feats',categorical_feats)
-    print(test[categorical_feats])
-    print(train[categorical_feats])
-    print('numerical_feats',numerical_feats)
-    print(train[numerical_feats])
-    print(test[numerical_feats])
+    # print('categorical_feats',categorical_feats)
+    # print(test[categorical_feats])
+    # print(train[categorical_feats])
+    # print('numerical_feats',numerical_feats)
+    # print(train[numerical_feats])
+    # print(test[numerical_feats])
 
-    print(train.isnull().sum())
-    print(test.isnull().sum())
+    # print(train.isnull().sum())
+    # print(test.isnull().sum())
     return train, test
 
 
