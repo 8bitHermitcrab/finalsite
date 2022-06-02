@@ -7,15 +7,11 @@ import plotly.express as px
 from persist import persist, load_widget_state
 from catboost_model_sample import preprocessing, train_model, result, zerone
 from catboost import CatBoostClassifier # 05/28
-<<<<<<< HEAD
-import os
-=======
 from io import BytesIO
 
 # import pandas_profiling
 
 # from streamlit_pandas_profiling import st_profile_report
->>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
 
 
 def main():
@@ -26,12 +22,7 @@ def main():
             "page": "home",
 
             # Radio, selectbox and multiselect options.
-<<<<<<< HEAD
-            "gender_options": ["F", "M"],
-            # "" : []
-=======
             "gender_options": ["여자", "남자"],
->>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
 
             # 기본값
             "text": "",
@@ -274,10 +265,6 @@ def my_settings():
         filename = './data/input_list.csv'
         if not os.path.exists(filename):
             pd.DataFrame([], columns=input_dict.keys()).to_csv(filename, mode='w' ,header=True, index=False)
-<<<<<<< HEAD
-        print("Hello World")
-=======
->>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
         a = pd.DataFrame([input_dict])
         a.to_csv(filename, mode='a', header=False, index=False)
 
