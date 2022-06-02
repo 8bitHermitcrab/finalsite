@@ -10,6 +10,33 @@ from sklearn.model_selection import StratifiedKFold
 from catboost import CatBoostClassifier, Pool
 
 
+def zerone(df):
+    # for i in df:
+    #     if i=='F':
+    #         pass
+    for li in ['car','reality']:
+        if df[li].values=='있음':
+            df[li]='Y'
+        else:
+            df[li]='N'
+        # df[df[li]=='있음']='Y'
+        # df[df[li]=='없음']='N'
+
+    for li in ['email','phone','work_phone']:
+        if df[li].values=='있음':
+            df[li]=1
+        else:
+            df[li]=0
+        # df[df[li]=='있음']=1
+        # df[df[li]=='없음']=0
+    for li in ['gender']:
+    # df[df['gender'] == '여자'] = 'F'
+    # df[df['gender'] == '남자'] = 'M'
+        if df[li].values=='여자':
+            df['gender']='F'
+        else:
+            df['gender']='M'
+    return df
 
 def preprocessing(train, test):
     # 파생변수 생성
@@ -129,13 +156,3 @@ def result(model_cat, X_train):
     # print('='*60)
 
     return y_predict
-
-
-# 5/28 수정
-# preprocessing(train, test)
-
-# train_model(train, test)
-
-# from_file = CatBoostClassifier()
-# from_file.load_model("/content/drive/MyDrive/final_project/model.bin")
-# from_file.predict(X_train)
