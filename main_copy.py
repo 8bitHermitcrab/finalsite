@@ -9,9 +9,9 @@ from catboost_model_sample import preprocessing, train_model, result, zerone
 from catboost import CatBoostClassifier # 05/28
 from io import BytesIO
 
-import pandas_profiling
+# import pandas_profiling
 
-from streamlit_pandas_profiling import st_profile_report
+# from streamlit_pandas_profiling import st_profile_report
 
 
 def main():
@@ -318,7 +318,6 @@ def my_settings():
         filename = './data/input_list.csv'
         if not os.path.exists(filename):
             pd.DataFrame([], columns=input_dict.keys()).to_csv(filename, mode='w' ,header=True, index=False)
-        print("Hello World")
         a = pd.DataFrame([input_dict])
         a.to_csv(filename, mode='a', header=False, index=False)
 
