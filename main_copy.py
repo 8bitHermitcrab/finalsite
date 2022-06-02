@@ -1,12 +1,21 @@
+import os
 import streamlit as st
 # from multiapp import MultiApp
 import pandas as pd
 import numpy as np
 import plotly.express as px
 from persist import persist, load_widget_state
-from catboost_model_sample import preprocessing, train_model, result
+from catboost_model_sample import preprocessing, train_model, result, zerone
 from catboost import CatBoostClassifier # 05/28
+<<<<<<< HEAD
 import os
+=======
+from io import BytesIO
+
+# import pandas_profiling
+
+# from streamlit_pandas_profiling import st_profile_report
+>>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
 
 
 def main():
@@ -17,8 +26,12 @@ def main():
             "page": "home",
 
             # Radio, selectbox and multiselect options.
+<<<<<<< HEAD
             "gender_options": ["F", "M"],
             # "" : []
+=======
+            "gender_options": ["여자", "남자"],
+>>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
 
             # 기본값
             "text": "",
@@ -130,10 +143,33 @@ def total_graph():
         st.plotly_chart(fig)
 
     train = pd.read_csv(DATA_PATH + 'final_df.csv')
+<<<<<<< HEAD
     # X_train = pd.read_csv(DATA_PATH + 'service.csv')
     X_train = pd.read_csv(DATA_PATH + 'input_list.csv')
 
+=======
+    # train.drop('credit', axis=1, inplace=True)
+    # train.drop('Unnamed: 0', axis=1, inplace=True)
+    X_train = pd.read_csv(DATA_PATH + 'input_list.csv')
+    X_train=zerone(X_train)
+    # a = train.profile_report()
+    # b = X_train.profile_report()
+    # st_profile_report(a)
+    # st_profile_report(b)
+    # a = pd.read_csv(DATA_PATH + 'service.csv')
+    print(X_train.info())
+    # print("-"*10)
+    # print(a[X_train.columns].info())
+    # 1. 사용자 input 저장 ( DB vs CSV)
+    # 2. model -> data를 뭘 사용? (train데이터로 학습된 모델 사용)
+    # -> 
+
+
+    # pre_train, pre_test = preprocessing(train, test)
+    # pre_train, pre_X_train = preprocessing(train, X_train)
+>>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
     preprocessing(train, X_train)
+    # preprocessing(train, a)
     # 데이터 전처리 출력
     # st.write(pre_train, pre_test)
     # st.write(pre_train, pre_X_train)
@@ -150,6 +186,11 @@ def total_graph():
 
     # 학습 결과
     # y_predict = result(model_cat, X_train)
+    
+    # b = from_file.predict(train)
+    
+    print("AAAA")
+
     y_predict = from_file.predict(X_train) # 5/28
     # 학습 결과 출력
     st.write(y_predict)
@@ -166,6 +207,7 @@ def total_graph():
 
 
 
+    
 def my_settings():
     st.header("정보를 입력해주세요")
 
@@ -238,7 +280,10 @@ def my_settings():
         filename = './data/input_list.csv'
         if not os.path.exists(filename):
             pd.DataFrame([], columns=input_dict.keys()).to_csv(filename, mode='w' ,header=True, index=False)
+<<<<<<< HEAD
         print("Hello World")
+=======
+>>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
         a = pd.DataFrame([input_dict])
         a.to_csv(filename, mode='a', header=False, index=False)
 

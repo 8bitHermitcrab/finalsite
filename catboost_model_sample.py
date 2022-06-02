@@ -11,9 +11,12 @@ from catboost import CatBoostClassifier, Pool
 
 
 def zerone(df):
+<<<<<<< HEAD
     # for i in df:
     #     if i=='F':
     #         pass
+=======
+>>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
     for li in ['car','reality']:
         if df[li].values=='있음':
             df[li]='Y'
@@ -80,6 +83,7 @@ def preprocessing(train, test):
     test.drop(cols, axis=1, inplace=True)
 
     numerical_feats = df.dtypes[df.dtypes != "object"].index.tolist()
+    
     try:
         numerical_feats.remove('credit')
     except:
@@ -101,7 +105,15 @@ def preprocessing(train, test):
     scaler = StandardScaler()
     train[numerical_feats] = scaler.fit_transform(train[numerical_feats])
     test[numerical_feats] = scaler.transform(test[numerical_feats])
+    print('categorical_feats',categorical_feats)
+    print(test[categorical_feats])
+    print(train[categorical_feats])
+    print('numerical_feats',numerical_feats)
+    print(train[numerical_feats])
+    print(test[numerical_feats])
 
+    print(train.isnull().sum())
+    print(test.isnull().sum())
     return train, test
 
 

@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 gender,DAYS_BIRTH,edu_type,income_total,child_num,DAYS_EMPLOYED_r,work_phone,phone,email,car,reality,income_type,family_type,house_type,occyp_type,family_size,begin_month
 0,F,34,Higher education,0,0,0,있음,있음,있음,없음,없음,Commercial associate,Civil marriage,Co-op apartment,Accountants,0,25
+=======
+gender,car,reality,child_num,income_total,income_type,edu_type,family_type,house_type,DAYS_BIRTH,DAYS_EMPLOYED_r,work_phone,phone,email,occyp_type,family_size,begin_month
+여자,없음,없음,0,202500.0,Commercial associate,Higher education,Married,Municipal apartment,38,12,없음,없음,없음,Security staff,2.0,25.0
+>>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
