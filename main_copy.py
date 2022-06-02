@@ -143,11 +143,6 @@ def total_graph():
         st.plotly_chart(fig)
 
     train = pd.read_csv(DATA_PATH + 'final_df.csv')
-<<<<<<< HEAD
-    # X_train = pd.read_csv(DATA_PATH + 'service.csv')
-    X_train = pd.read_csv(DATA_PATH + 'input_list.csv')
-
-=======
     # train.drop('credit', axis=1, inplace=True)
     # train.drop('Unnamed: 0', axis=1, inplace=True)
     X_train = pd.read_csv(DATA_PATH + 'input_list.csv')
@@ -167,7 +162,6 @@ def total_graph():
 
     # pre_train, pre_test = preprocessing(train, test)
     # pre_train, pre_X_train = preprocessing(train, X_train)
->>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
     preprocessing(train, X_train)
     # preprocessing(train, a)
     # 데이터 전처리 출력

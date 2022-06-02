@@ -11,12 +11,6 @@ from catboost import CatBoostClassifier, Pool
 
 
 def zerone(df):
-<<<<<<< HEAD
-    # for i in df:
-    #     if i=='F':
-    #         pass
-=======
->>>>>>> 01b977e0fbcdb196561a2b2416c6aa11369231f8
     for li in ['car','reality']:
         if df[li].values=='있음':
             df[li]='Y'
