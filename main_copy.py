@@ -28,69 +28,27 @@ def main():
             "text": "",
             "slider": 0,
             "checkbox": False,
-            "radio": "F",
+            "gender" : "여자",
+            # "age" :
             "selectbox": "Hello",
             "multiselect": ["Hello", "Everyone"],
-        })
+        }
+        )
 
-    page = st.sidebar.radio("Select your page", tuple(PAGES.keys()), format_func=str.capitalize)
+    page = st.sidebar.radio("페이지를 선택해주세요", tuple(PAGES.keys()), format_func=str.capitalize)
 
     PAGES[page]()
 
-
 def total_graph():
     st.subheader('전체 표 보기')
-    # st.title('신용카드 사용자 신용도 예측 서비스')
-    # DATA_PATH = ('/Users/kij/projects/finalsite/data/')
-    # DATA_PATH = ('/Users/jiho/Desktop/mulcam_final/data/')
     DATA_PATH = ('./data/')
 
-    # # train 차트 불러오기
-    # @st.cache
-    # def load_train(nrows):
-    #     train = pd.read_csv(DATA_PATH + 'final_df.csv', nrows=nrows)
-    #     # train = pd.read_csv(DATA_PATH + 'final_df.csv')
-    #     train.drop(['credit_r', 'DAYS_EMPLOYED'], axis=1, inplace=True)
-    #     train.drop('Unnamed: 0', axis=1, inplace=True)
-    #     return train
-
-    # # test 차트 불러오기
-    # @st.cache
-    # def load_test(nrows):
-    #     test = pd.read_csv(DATA_PATH + 'final_test_df.csv', nrows=nrows)
-    #     # test = pd.read_csv(DATA_PATH + 'final_test_df.csv')
-    #     test.drop(['DAYS_EMPLOYED'], axis=1, inplace=True)
-    #     return test
-
     # 불러온 차트 보여주기
-    # data_load_state = st.text('Loading data...')
     train = pd.read_csv(DATA_PATH + 'final_df.csv')
     train.drop(['credit_r', 'DAYS_EMPLOYED'], axis=1, inplace=True)
     test = pd.read_csv(DATA_PATH + 'final_test_df.csv')
     test.drop(['DAYS_EMPLOYED'], axis=1, inplace=True)
-    # test = load_test(10)
-    # data_load_state.text("Done! (using st.cache)")
 
-
-# income_total, income_type, days_birth, days_employed,
-# occyp_type, begin_month, ability, income_mean 
-
-
-    #plotly bar차트
-    # train_data = train.groupby(by=['gender', 'credit']).count()
-    # train_data = train.groupby(level=0).apply(lambda x: x).reset_index()
-
-    # fig2 = px.bar(train, color_discrete_sequence=px.colors.qualitative.Pastel1,x='gender', y='credit', color='credit',
-                    
-    #                 category_orders={'gender': train_data['credit'].values,
-
-    #                                 'credit':train_data['gender'].values},
-    #                 labels={
-    #                         'gender': 'gender',
-    #                         "Unnamed: 0": "숫자",
-    #                         'credit': 'credit'
-    #                         },)
-    # st.plotly_chart(fig2)
 
     #income_total
     for col1, col2 in [['income_total', 'DAYS_BIRTH']]:
@@ -98,6 +56,21 @@ def total_graph():
         df['credit'] = df['credit'].astype(str)
         fig = px.scatter(df, x=col2, y=col1, color="credit", title=str('Scatter chart: '+col1+' & '+col2))
                         #  size='', hover_data=[''])
+        fig.add_annotation(x=38,
+            y=202500.0,
+            # text=" ",
+            # bgcolor='white',
+            # font_size=15,
+            showarrow=True,
+            arrowsize=2, 
+            arrowhead=3, 
+            # ax=20, 
+            # ay=0,
+            # arrowhead=3,
+            arrowwidth=1,
+            arrowcolor='red',
+            # xshift=10
+            )
         # fig.show()
         st.plotly_chart(fig)
     
@@ -121,9 +94,11 @@ def total_graph():
     #train['DAYS_EMPLOYED_Y'] = train['DAYS_EMPLOYED_Y'].map(lambda x: 0 if x < 0 else x)
     for col in ['DAYS_EMPLOYED_r']:
         df = train.copy()
+        df = df[df['DAYS_EMPLOYED_r'] > 0]
         df = df.groupby(by=[col,'credit']).count().reset_index()
         df['credit'] = df['credit'].astype(str)
         fig = px.scatter(df, x=col, y="Unnamed: 0", title=str('Bar chart: '+col+' & credit count'), color="credit", labels={col:'DAYS_EMPLOYED_r','Unnamed: 0':'credit count'})
+        # fig.update_layout(legend_traceorder="normal", legend_title='credit')
         st.plotly_chart(fig)
 
     #occyp_type
@@ -144,53 +119,51 @@ def total_graph():
         # fig.show()
         st.plotly_chart(fig)
     
-    # 데이터 전처리
-    train.drop('Unnamed: 0', axis=1, inplace=True)
-    pre_train, pre_test = preprocessing(train, test)
-
-
-    #ability
-    for col1, col2 in [['ability', 'income_type']]:
+    for col1, col2 in [['credit','occyp_type']]:
         df = train.copy()
-        df['credit'] = df['credit'].astype(str)
-        fig = px.scatter(df, x=col2, y=col1, color="credit", title=str('Scatter chart: '+col1+' & '+col2))
-                        #  size='', hover_data=[''])
+        fig = px.sunburst(df, path=[col1,col2], title = str('Sun chart: '+col1+' & '+col2))
         # fig.show()
+        fig.update_layout(margin=dict(t=50, l=50, r=50, b=50)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
         st.plotly_chart(fig)
-    
-    #income_mean
-    for col1, col2 in [['income_mean', 'family_type']]:
-        df = train.copy()
-        df['credit'] = df['credit'].astype(str)
-        fig = px.scatter(df, x=col2, y=col1, color="credit", title=str('Scatter chart: '+col1+' & '+col2))
-                        #  size='', hover_data=[''])
-        # fig.show()
-        st.plotly_chart(fig)
-    
+
     # sunburst chart
     # col1, col2, col3 in 범주형 변수, 범주형 변수, 범주형 변수
     for col1, col2, col3 in [['family_type','income_type', 'credit']]:
         df = train.copy()
         fig = px.sunburst(df, path=[col1,col2,col3], title = str('Sun chart: '+col1+' & '+col2+' & '+col3))
         # fig.show()
+        fig.update_layout(margin=dict(t=50, l=50, r=50, b=50)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
         st.plotly_chart(fig)
 
-    # if st.checkbox('Show raw data'):
-    #     st.subheader('Raw data')
-    #     st.write(train)
-    #     st.write(test)
+    #ability
+    for col1, col2 in [['ability', 'income_type']]:
+        df = train.copy()
+        #ability: 소득/(살아온 일수+ 근무일수)
+        df['ability'] = df['income_total'] / (df['DAYS_BIRTH']*365 + df['DAYS_EMPLOYED_r']*365)
+        df['credit'] = df['credit'].astype(str)
+        fig = px.scatter(df, x=col2, y=col1, color="credit", title=str('Scatter chart: '+col1+' & '+col2))
+                        #  size='', hover_data=[''])
+        # fig.show()
+        # 범례
+        # fig.update_layout(legend_traceorder="normal")
+        st.plotly_chart(fig)
+    
+    #income_mean
+    for col1, col2 in [['income_mean', 'family_type']]:
+        # df = train.copy()
+        #income_mean: 소득/ 가족 수
+        df['income_mean'] = df['income_total'] / df['family_size']
+        df['credit'] = df['credit'].astype(str)
+        fig = px.scatter(df, x=col2, y=col1, color="credit", title=str('Scatter chart: '+col1+' & '+col2))
+                        #  size='', hover_data=[''])
+        # fig.show()
+        st.plotly_chart(fig)
+
 
     train = pd.read_csv(DATA_PATH + 'final_df.csv')
-    # train.drop('credit', axis=1, inplace=True)
-    # train.drop('Unnamed: 0', axis=1, inplace=True)
     X_train = pd.read_csv(DATA_PATH + 'input_list.csv')
     X_train=zerone(X_train)
-    # a = train.profile_report()
-    # b = X_train.profile_report()
-    # st_profile_report(a)
-    # st_profile_report(b)
-    # a = pd.read_csv(DATA_PATH + 'service.csv')
-    print(X_train.info())
+    # print(X_train.info())
     # print("-"*10)
     # print(a[X_train.columns].info())
     # 1. 사용자 input 저장 ( DB vs CSV)
@@ -209,37 +182,31 @@ def total_graph():
 
     # 모델 학습
     # model_cat, X_train = train_model(pre_train, pre_test)
-    # model_cat.save_model('/Users/jiho/Desktop/mulcam_final/data/model.bin') # 5/28
-    # model_cat.save_model("./data/model.bin")
+    # model_cat.save_model("./data/model.bin") # 5/28
 
     # 모델 학습 출력
     # st.write(model_cat, X_train)
     from_file = CatBoostClassifier()  # 5/28
-    # from_file.load_model("/Users/jiho/Desktop/mulcam_final/data/model.bin") # 5/28
-    from_file.load_model("./data/model.bin")
+    from_file.load_model("./data/model.bin") # 5/28
 
     # 학습 결과
     # y_predict = result(model_cat, X_train)
     
     # b = from_file.predict(train)
     
-    print("AAAA")
+    # print("AAAA")
 
     y_predict = from_file.predict(X_train) # 5/28
     # 학습 결과 출력
     st.write(y_predict)
-
+    your_score = y_predict[0][0]
+    st.write(f'당신의 신용도는 {your_score}등급입니다.')
 
     st.write(
         f"""
         Settings values
         ---------------
-        - **Gender**: {st.session_state.gender}
-        - **Slider**: `{st.session_state.slider}`
-        - **Checkbox**: `{st.session_state.checkbox}`
-        - **Radio**: {st.session_state.radio}
-        - **Selectbox**: {st.session_state.selectbox}
-        - **Multiselect**: {", ".join(st.session_state.multiselect)}
+        - **성별**: {st.session_state.gender}
         """
     )
 
@@ -322,11 +289,23 @@ def my_settings():
         a.to_csv(filename, mode='a', header=False, index=False)
 
         # 다른페이지로 이동
-        # 결과 출력 
+        # 결과 출력
+        DATA_PATH = ('./data/')
+        train = pd.read_csv(DATA_PATH + 'final_df.csv')
+        X_train = pd.read_csv(DATA_PATH + 'input_list.csv')
+        X_train=zerone(X_train)
+        preprocessing(train, X_train)
+        from_file = CatBoostClassifier()  # 5/28
+        from_file.load_model("./data/model.bin") # 5/28
+        y_predict = from_file.predict(X_train) # 5/28
+        your_score = y_predict[0][0]
+        st.info(f'당신의 신용도는 {2}등급입니다.')
 
 
 def my_graph():
     st.header("내 표 보기")
+
+    st.write()
 
 
 PAGES = {

@@ -99,15 +99,15 @@ def preprocessing(train, test):
     scaler = StandardScaler()
     train[numerical_feats] = scaler.fit_transform(train[numerical_feats])
     test[numerical_feats] = scaler.transform(test[numerical_feats])
-    print('categorical_feats',categorical_feats)
-    print(test[categorical_feats])
-    print(train[categorical_feats])
-    print('numerical_feats',numerical_feats)
-    print(train[numerical_feats])
-    print(test[numerical_feats])
+    # print('categorical_feats',categorical_feats)
+    # print(test[categorical_feats])
+    # print(train[categorical_feats])
+    # print('numerical_feats',numerical_feats)
+    # print(train[numerical_feats])
+    # print(test[numerical_feats])
 
-    print(train.isnull().sum())
-    print(test.isnull().sum())
+    # print(train.isnull().sum())
+    # print(test.isnull().sum())
     return train, test
 
 
@@ -162,13 +162,3 @@ def result(model_cat, X_train):
     # print('='*60)
 
     return y_predict
-
-
-# 5/28 수정
-# preprocessing(train, test)
-
-# train_model(train, test)
-
-# from_file = CatBoostClassifier()
-# from_file.load_model("/content/drive/MyDrive/final_project/model.bin")
-# from_file.predict(X_train)
