@@ -301,6 +301,11 @@ def my_settings():
         your_score = y_predict[0][0]
         st.info(f'당신의 신용도는 {2}등급입니다.')
 
+    is_reset = st.button("초기화", )
+    if is_reset:
+        os.unlink('./data/input_list.csv')
+        st.success('데이터가 초기화되었습니다.')
+
 
 def my_graph():
     st.header("내 표 보기")
