@@ -220,6 +220,11 @@ def my_settings():
     DAYS_BIRTH=st.text_input('나이')
     edu_type=st.selectbox('학력',('Higher education' ,'Secondary / secondary special', 'Incomplete higher', 'Lower secondary', 'Academic degree'))
     income_total=st.text_input('소득','0')
+    try:
+        if type(int(income_total)) == int:
+            pass
+    except:
+        st.error("형식에 맞게 입력해 주세요.")
     child_num=st.text_input('아이 수','0')
     DAYS_EMPLOYED_r=st.text_input('고용연수','0')
     work_phone=st.radio('직장 전화',('있음','없음'))
