@@ -305,6 +305,14 @@ def my_settings():
 def my_graph():
     st.header("내 표 보기")
 
+    from datetime import datetime
+
+    print(datetime.today())
+    print(datetime.today().year)
+    print(datetime.today().month)
+    print(datetime.today().day)
+    print(datetime.today().hour)
+
     st.write()
 
 
