@@ -10,30 +10,30 @@ from sklearn.model_selection import StratifiedKFold
 from catboost import CatBoostClassifier, Pool
 
 
-# def zerone(df):
-#     for li in ['car','reality']:
-#         if df[li].values=='있음':
-#             df[li]='Y'
-#         else:
-#             df[li]='N'
-#         # df[df[li]=='있음']='Y'
-#         # df[df[li]=='없음']='N'
+def zerone(df):
+    for li in ['car','reality']:
+        if df[li].values=='있음':
+            df[li]='Y'
+        else:
+            df[li]='N'
+        # df[df[li]=='있음']='Y'
+        # df[df[li]=='없음']='N'
 
-#     for li in ['email','phone','work_phone']:
-#         if df[li].values=='있음':
-#             df[li]=1
-#         else:
-#             df[li]=0
-#         # df[df[li]=='있음']=1
-#         # df[df[li]=='없음']=0
-#     for li in ['gender']:
-#     # df[df['gender'] == '여자'] = 'F'
-#     # df[df['gender'] == '남자'] = 'M'
-#         if df[li].values=='여자':
-#             df['gender']='F'
-#         else:
-#             df['gender']='M'
-#     return df
+    for li in ['email','phone','work_phone']:
+        if df[li].values=='있음':
+            df[li]=1
+        else:
+            df[li]=0
+        # df[df[li]=='있음']=1
+        # df[df[li]=='없음']=0
+    for li in ['gender']:
+    # df[df['gender'] == '여자'] = 'F'
+    # df[df['gender'] == '남자'] = 'M'
+        if df[li].values=='여자':
+            df['gender']='F'
+        else:
+            df['gender']='M'
+    return df
 
 def preprocessing(train, test):
     # 파생변수 생성

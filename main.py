@@ -11,6 +11,7 @@ from io import BytesIO
 from datetime import datetime
 import streamlit_authenticator as stauth
 
+st.set_page_config(layout = "wide")
 
 def main():
     if "page" not in st.session_state:
@@ -57,118 +58,168 @@ def login():
 
 
 def total_graph():
-    st.header("마이데이터를 활용한 신용도 예측 시스템")
-    st.subheader('기업용 전체 표 보기')
-    
+    st.subheader('신용도와 연관된 전체 표 보기')
+    st.text('*신용도는 0등급, 1등급, 2등급으로 분류되며 숫자가 낮을수록 신용도가 높습니다.')
+    st.text('*전체 화면을 권장하며, 신용도를 클릭하시면 더욱 자세히 볼 수 있습니다.')
+    # st.title('신용카드 사용자 신용도 예측 서비스')
     DATA_PATH = ('./data/')
 
     # 불러온 차트 보여주기
     train = pd.read_csv(DATA_PATH + 'trans_final_df.csv')
-    train.drop(['신용도_r', '고용연수'], axis=1, inplace=True)
-
-    #income_total
-    for col1, col2 in [['income_total', 'DAYS_BIRTH']]:
-        df = train.copy()
-        df['credit'] = df['credit'].astype(str)
-        fig = px.scatter(df, x=col2, y=col1, color="credit", title=str('Scatter chart: '+col1+' & '+col2))
-                        #  size='', hover_data=[''])
-        fig.add_annotation(x=38,
-            y=202500.0,
-            # text=" ",
-            # bgcolor='white',
-            # font_size=15,
-            showarrow=True,
-            arrowsize=2, 
-            arrowhead=3, 
-            # ax=20, 
-            # ay=0,
-            # arrowhead=3,
-            arrowwidth=1,
-            arrowcolor='red',
-            # xshift=10
-            )
-        # fig.show()
-        st.plotly_chart(fig)
+    # train.drop(['credit_r', 'DAYS_EMPLOYED'], axis=1, inplace=True)
+    test = pd.read_csv(DATA_PATH + 'final_test_df.csv')
+    test.drop(['DAYS_EMPLOYED'], axis=1, inplace=True)
     
-    #income_type
-    for col in ['income_type']:
-        df = train.copy()
-        df = df.groupby(by=[col,'credit']).count().reset_index()
-        df['credit'] = df['credit'].astype(str)
-        fig = px.bar(df, x=col, y="Unnamed: 0", title=str('Bar chart: '+col+' & credit count'), color="credit", labels={col:'income_type','Unnamed: 0':'credit count'})
-        st.plotly_chart(fig)
-
-    #days_birth
-    for col in ['DAYS_BIRTH']:
-        df = train.copy()
-        df = df.groupby(by=[col,'credit']).count().reset_index()
-        df['credit'] = df['credit'].astype(str)
-        fig = px.bar(df, x=col, y="Unnamed: 0", title=str('Bar chart: '+col+' & credit count'), color="credit", labels={col:'age','Unnamed: 0':'credit count'})
-        st.plotly_chart(fig)
-
-    #DAYS_EMPLOYED
-    #train['DAYS_EMPLOYED_Y'] = train['DAYS_EMPLOYED_Y'].map(lambda x: 0 if x < 0 else x)
-    for col in ['DAYS_EMPLOYED_r']:
-        df = train.copy()
-        df = df[df['DAYS_EMPLOYED_r'] > 0]
-        df = df.groupby(by=[col,'credit']).count().reset_index()
-        df['credit'] = df['credit'].astype(str)
-        fig = px.scatter(df, x=col, y="Unnamed: 0", title=str('Bar chart: '+col+' & credit count'), color="credit", labels={col:'DAYS_EMPLOYED_r','Unnamed: 0':'credit count'})
-        # fig.update_layout(legend_traceorder="normal", legend_title='credit')
-        st.plotly_chart(fig)
-
-    #occyp_type
-    for col in ['occyp_type']:
-        df = train.copy()
-        df = df.groupby(by=[col,'credit']).count().reset_index()
-        df['credit'] = df['credit'].astype(str)
-        fig = px.pie(df, values='Unnamed: 0', names=col, title=str('Pie chart: '+col), labels={col:'occyp_type','Unnamed: 0':'credit count'})
-        st.plotly_chart(fig)
-
-    #begin_month
-    for col in ['begin_month']:
-        df = train.copy()
-        df = df.groupby(by=[col,'credit']).count().reset_index()
-        df['credit'] = df['credit'].astype(str)
-        fig = px.bar(df, x=col, y="Unnamed: 0", title=str('Bar chart: '+col+' & credit count'), color="credit", labels={col:'begin_month','Unnamed: 0':'credit count'})
-        # fig.show()
-        st.plotly_chart(fig)
     
-    for col1, col2 in [['credit','occyp_type']]:
-        df = train.copy()
-        fig = px.sunburst(df, path=[col1,col2], title = str('Sun chart: '+col1+' & '+col2))
-        fig.update_layout(margin=dict(t=50, l=50, r=50, b=50)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
-        st.plotly_chart(fig)
+    # column1, column2, column3 = st.columns(3)
+    column1, column2 = st.columns(2)
 
-    # sunburst chart
-    # col1, col2, col3 in 범주형 변수, 범주형 변수, 범주형 변수
-    for col1, col2, col3 in [['family_type','income_type', 'credit']]:
-        df = train.copy()
-        fig = px.sunburst(df, path=[col1,col2,col3], title = str('Sun chart: '+col1+' & '+col2+' & '+col3))
-        fig.update_layout(margin=dict(t=50, l=50, r=50, b=50)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
-        st.plotly_chart(fig)
+    with column1:
+        # 수정 필요
+        # sb_column=st.selectbox('6.선택한 항목과 Credit의 관계를 Sunburst chart로 나타냅니다.',('income_type',
+        #     'DAYS_BIRTH',
+        #     'occyp_type',
+        #     'begin_month',
+        #     'edu_type'))
+        for col in ['소득_형태','성별','연령대','소득_4분위']:
+            df = train.copy()
+            # df['소득 4분위']=df['소득 4분위'].astype('int64')
+            fig = px.sunburst(df,width=600, height=600, path=['신용도',col], title = str(col+'별 신용도 비율'))
+            fig.update_layout(margin=dict(t=80)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}",)
+            st.plotly_chart(fig)
 
-    #ability
-    for col1, col2 in [['ability', 'income_type']]:
+        #income_type
+        for col in ['직업']:
+            df = train.copy()
+            df = df.groupby(by=[col,'신용도']).count().reset_index()
+            df['신용도'] = df['신용도'].astype(str)
+            # df = df.sort_values(by=df['신용도'].count())
+            fig = px.bar(df, width=800, height=600,x=col, y="Unnamed: 0", title=str('Bar chart: '+col+' & 신용도 count'),barmode='group',color="신용도", labels={col:'직업 유형','Unnamed: 0':'인원'})
+            fig.add_annotation(text="신용도 0일수록 신용도가 높음. 2가 제일 낮음",
+                        xref="paper", yref="paper",
+                        x=0.99, y=0.99, showarrow=False)
+            st.plotly_chart(fig)
+    with column2:
+        for col in ['학력','가족_규모','소득_5분위','소득_10분위']:
+            df = train.copy()
+            # df['소득 5분위']=df['소득 5분위'].astype('int64')
+            fig = px.sunburst(df, width=600, height=600,path=['신용도',col], title = str(col+'별 신용도 비율'))
+            fig.update_layout(margin=dict(t=80)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
+            st.plotly_chart(fig)
+            
+
+
+            # df = train.copy()
+            # # df['소득 5분위']=df['소득 5분위'].astype('int64')
+            # fig = px.sunburst(df, width=600, height=600,path=['신용도',col], title = str(col+'별 신용도 비율'))
+            # fig.update_layout(margin=dict(t=80)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
+            # st.plotly_chart(fig)
+            # x=col, y='신용도'
+
+    # with column3:
+    #         df = train.copy()
+    #         fig = px.sunburst(df, width=450, height=450,path=['신용도','성별'], title = str('성별 신용도 비율'))
+    #         fig.update_layout(margin=dict(t=80)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
+    #         st.plotly_chart(fig)
+
+    #     # for col in [sb_column]:
+    #         df = train.copy()
+            
+    #         fig = px.sunburst(df, width=450, height=450,path=['신용도','가족 규모'], title = str('가족 규모별 신용도 비율'))
+    #         fig.update_layout(margin=dict(t=80)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
+    #         st.plotly_chart(fig)  
+
+    #         df = train.copy()            
+    #         # df['소득 10분위']=df['소득 10분위'].astype('int64')
+    #         fig = px.sunburst(df, width=450, height=450,path=['신용도','소득 10분위'], title = str('소득 10분위별 신용도 비율'))
+    #         fig.update_layout(margin=dict(t=80)).update_traces(texttemplate="%{label}<br>%{percentEntry:.2%}")
+    #         st.plotly_chart(fig)  
+
+    # fig =go.Figure(go.Sunburst(df,
+    #     labels=list(df['가족 규모']),
+    #     parents=list(df['신용도']),
+    #     values=list(df['Unnamed: 0']),
+    # ))
+    # # Update layout for tight margin
+    # # See https://plotly.com/python/creating-and-updating-figures/
+    # fig.update_layout(margin = dict(t=0, l=0, r=0, b=0))
+    # st.plotly_chart(fig)  
+
+
+    # --------------신용도 그래프 끝------------------   
+         
+    st.subheader('선택해서 표 보기')
+        
+    income_column=st.selectbox('1. 선택한 항목별 연 소득의 분포를 상자 그림으로 나타냅니다.',
+    ('성별', '자동차', '부동산', '아이 수', '소득 형태', '학력', '가족 형태', '주거 형태', '연령대',  '직업', '가족 규모'))
+    for col1, col2 in [[income_column, '소득']]:
         df = train.copy()
-        #ability: 소득/(살아온 일수+ 근무일수)
-        df['ability'] = df['income_total'] / (df['DAYS_BIRTH']*365 + df['DAYS_EMPLOYED_r']*365)
-        df['credit'] = df['credit'].astype(str)
-        fig = px.scatter(df, x=col2, y=col1, color="credit", title=str('Scatter chart: '+col1+' & '+col2))
-                        #  size='', hover_data=[''])
-        # 범례
-        # fig.update_layout(legend_traceorder="normal")
+        fig = px.box(df, x=col1, y=col2, title=str(col1+' 별 연 소득 분포'))
         st.plotly_chart(fig)
+    income_column=st.selectbox('2. 선택한 항목과 연 소득 평균의 관계를 막대그래프로 나타냅니다.',
+    ('성별', '자동차', '부동산', '소득 형태', '학력', '가족 형태', '주거 형태', '직업','나이', '가족 규모'))
+    if income_column == '나이' or income_column == '가족 형태':
+        for col1, col2 in [[income_column, '소득']]:
+            df = train.copy()
+            df = df.groupby([col1], as_index=False).mean()
+            fig = px.bar(df, x=col1, y=col2, title=str(col1+' 별 연 소득 평균'))
+            st.plotly_chart(fig)
+    else:
+        for col1, col2 in [[income_column, '소득']]:
+            df = train.copy()
+            df = df.groupby([col1], as_index=False).mean()
+            df = df.sort_values(by=[col2])
+            fig = px.bar(df,x=col1, y=col2, title=str(col1+' 별 연 소득 평균'))
+        st.plotly_chart(fig)
+    # 수정 필요
+    bar_column1=st.selectbox('3.선택한 항목과  평균 고용연수의 관계를 막대그래프로 나타냅니다.',
+    ('성별','자동차', '부동산','직장 전화','집 전화','이메일',
+    '소득 형태', '학력', '가족 형태', '주거 형태', '직업',
+    '아이 수','가족 규모','신용카드 발급기간','나이'))
+
+    if bar_column1 == '신용카드 발급기간' or bar_column1 == '나이' or bar_column1 == '가족 규모' or bar_column1 == '아이 수':
+        for col1, col2 in [[bar_column1, '고용연수']]:
+            df = train.copy()
+            df = df.groupby([col1], as_index=False).mean()
+            fig = px.bar(df, x=col1, y=col2, title=str(col1+' 별 고용연수 평균 비율'))
+            st.plotly_chart(fig)
+    elif bar_column1:
+        for col1, col2 in [[bar_column1, '고용연수']]:
+            df = train.copy()
+            df = df.groupby([col1], as_index=False).mean()
+            df = df.sort_values(by=[col2])
+            fig = px.bar(df,x=col1, y=col2, title=str(col1+' 별 고용연수 평균 비율'))
+            st.plotly_chart(fig)
     
-    #income_mean
-    for col1, col2 in [['income_mean', 'family_type']]:
-        # df = train.copy()
-        #income_mean: 소득/ 가족 수
-        df['income_mean'] = df['income_total'] / df['family_size']
-        df['credit'] = df['credit'].astype(str)
-        fig = px.scatter(df, x=col2, y=col1, color="credit", title=str('Scatter chart: '+col1+' & '+col2))
-                        #  size='', hover_data=[''])
-        st.plotly_chart(fig)
+    # bar_column=st.selectbox('5.선택한 항목과 Credit의 관계를 Bar chart로 나타냅니다.',('income_type',
+    #     'DAYS_BIRTH',
+    #     'occyp_type',
+    #     'begin_month',
+    #     'edu_type',
+    #     'family_type'))
+    # if bar_column:
+    #     for col in [bar_column]:
+    #         df = train.copy()
+    #         df = df.groupby(by=[col,'credit']).count().reset_index()
+    #         df['credit'] = df['credit'].astype(str)
+    #         fig = px.bar(df,x=col, y="Unnamed: 0", title=str(col+' & credit count'), color="credit", labels={col:bar_column,'Unnamed: 0':'credit count'})
+    #         st.plotly_chart(fig)
+
+            #############
+    pie_column=st.selectbox('4.선택한 항목의 유저수를 원형 그래프로 나타냅니다.',
+    ('성별','자동차', '부동산','직장 전화','집 전화','이메일',
+    '소득 형태', '학력', '가족 형태', '주거 형태', '직업',
+    '아이 수','가족 규모'))
+    if pie_column:
+        df = train.copy()
+        for col in [pie_column]:
+
+            # df = df.groupby(by=[col,'신용도']).count().reset_index()
+            # df['신용도'] = df['신용도'].astype(str)
+
+            fig = px.pie(df, values='Unnamed: 0', names=col, 
+            labels={col:col,'Unnamed: 0':'유저 수'})
+            st.plotly_chart(fig)
 
 
     # train = pd.read_csv(DATA_PATH + 'final_df.csv')
