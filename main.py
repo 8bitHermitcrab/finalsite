@@ -358,7 +358,7 @@ def my_settings():
 
 PAGES = {
     "소비자용 내 정보 입력": my_settings,
-    "기업용 전체 표 보기": total_graph,
+    "기업용 전체 표 보기": login,
 }
 
 
