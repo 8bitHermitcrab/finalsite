@@ -73,7 +73,7 @@ def preprocessing(train, test):
         df['주거_형태'].astype(str) + '_' + df['직업'].astype(str)
 
     # cols = ['자녀_수', '나이', '고용연수_r']
-    cols = ['자녀_수', '나이', '고용연수_r', '연령대', '소득_4분위', '소득_5분위', '소득_10분위']
+    cols = ['자녀_수', '나이', '고용연수_r', '연령대', '소득_4분위', '소득_5분위', '소득_10분위', '신용도_r', 'Unnamed: 0']
     train.drop(cols, axis=1, inplace=True)
     cols_t = ['자녀_수', '나이', '고용연수_r']
     test.drop(cols_t, axis=1, inplace=True)

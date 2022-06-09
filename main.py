@@ -333,7 +333,7 @@ def my_settings():
         int(DAYS_BIRTH) 
     except:
         st.warning("형식에 맞게 입력해 주세요.")
-    edu_type=st.selectbox('학력',('중학교 졸업', '고등학교 졸업', '고등학교 중퇴', '초등학교 졸업', '대학교 졸업'))
+    edu_type=st.selectbox('학력',('중학교 졸업', '고등학교 졸업', '대학생', '대학교 졸업(학사)', '석사 이상'))
     income_total=st.text_input('소득 (만 단위)', placeholder='숫자만 입력(만 단위). 예) 4000만원 = 4000', max_chars=6)
     try:
         int(income_total)
@@ -369,7 +369,7 @@ def my_settings():
 
 
     # 제출 버튼
-    is_submit = st.button("제출", )
+    is_submit = st.button("제출")
 
 
     if is_submit:
@@ -378,6 +378,8 @@ def my_settings():
                 begin_month = 0
             else:
                 begin_month=int(begin_month[-2:])*12+int(begin_month[:2])-(datetime.today().year%100*12+datetime.today().month)
+        # except:
+        #     st.error('정보를 입력해 주세요.')
 
             input_dict = dict(
                 성별=gender,
@@ -411,7 +413,8 @@ def my_settings():
             # 결과 출력
             DATA_PATH = ('./data/')
             train = pd.read_csv(DATA_PATH + 'trans_final_df.csv')
-            train.drop(['Unnamed: 0', '신용도_r', '고용연수'], axis=1, inplace=True)
+            # train.drop(['Unnamed: 0', '신용도_r', '고용연수'], axis=1, inplace=True)
+            train.drop(['고용연수'], axis=1, inplace=True)
 
             X_train = pd.read_csv(DATA_PATH + 'input_list.csv')
 
@@ -425,7 +428,7 @@ def my_settings():
             # model_cat.save_model("./data/model.bin") # 5/28
 
             your_score = y_predict[0][0]
-            st.info(f'당신의 신용도는 {your_score}등급입니다.')
+            st.info(f"당신의 신용도는 \"{your_score}등급\"입니다.\n\n(신용도는 0등급, 1등급, 2등급으로 분류되며 숫자가 낮을수록 신용도가 높습니다.)")
         except:
             st.error('정보를 입력해 주세요.')
 
@@ -608,7 +611,7 @@ def another_graph():
     st.text('* 신용도와 관련이 깊은 요인을 분석합니다.')
     column1,column2=st.columns(2)
     with column1:
-        income_column=st.selectbox('1. 선택한 항목별 연 소득의 분포를 상자 그림으로 나타냅니다.',('직업', '성별', '자동차', '부동산', '소득_형태', '학력', '가족_형태', '주거_형태', '연령대', '가족_규모'))
+        income_column=st.selectbox('1. 선택한 항목별 연 소득의 분포를 상자 그림으로 나타냅니다.',('직업','성별', '자동차', '부동산', '소득_형태', '학력', '가족_형태', '주거_형태', '연령대',  '가족_규모'))
         for col1, col2 in [[income_column, '소득']]:
             df = train.copy()
             family(df)
@@ -648,7 +651,7 @@ def another_graph():
             st.plotly_chart(fig)
 
         
-        bar_column1=st.selectbox('4.선택한 항목과 고용연수 평균의 관계를 막대그래프로 나타냅니다.',
+        bar_column1=st.selectbox('4.선택한 항목과  고용연수 평균의 관계를 막대그래프로 나타냅니다.',
         ('소득_형태', '직업', '성별','자동차', '부동산',
          '학력', '가족_형태', '주거_형태', '가족_규모', '연령대'))
         if bar_column1 == '연령대' or bar_column1 == '가족_규모':
