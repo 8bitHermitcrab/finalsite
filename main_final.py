@@ -608,7 +608,7 @@ def another_graph():
     st.text('* 신용도와 관련이 깊은 요인을 분석합니다.')
     column1,column2=st.columns(2)
     with column1:
-        income_column=st.selectbox('1. 선택한 항목별 연 소득의 분포를 상자 그림으로 나타냅니다.',('성별', '자동차', '부동산', '소득_형태', '학력', '가족_형태', '주거_형태', '연령대',  '직업', '가족_규모'))
+        income_column=st.selectbox('1. 선택한 항목별 연 소득의 분포를 상자 그림으로 나타냅니다.',('직업', '성별', '자동차', '부동산', '소득_형태', '학력', '가족_형태', '주거_형태', '연령대', '가족_규모'))
         for col1, col2 in [[income_column, '소득']]:
             df = train.copy()
             family(df)
@@ -648,7 +648,7 @@ def another_graph():
             st.plotly_chart(fig)
 
         
-        bar_column1=st.selectbox('4.선택한 항목과  평균 고용연수의 관계를 막대그래프로 나타냅니다.',
+        bar_column1=st.selectbox('4.선택한 항목과 고용연수 평균의 관계를 막대그래프로 나타냅니다.',
         ('소득_형태', '직업', '성별','자동차', '부동산',
          '학력', '가족_형태', '주거_형태', '가족_규모', '연령대'))
         if bar_column1 == '연령대' or bar_column1 == '가족_규모':
