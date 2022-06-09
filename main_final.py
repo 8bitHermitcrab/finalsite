@@ -535,7 +535,7 @@ def credit_graph():
             df.rename(columns = {2 : '신용도2'}, inplace = True)
             fig = go.Figure(data=[go.Table(
                 header=dict(
-                values=['직업','0 등급','1 등급','2 등급'],
+                values=['학력','0 등급','1 등급','2 등급'],
                             fill_color='paleturquoise',
                             align='left'),
                 cells=dict(values=[df.index, df.신용도0, df.신용도1, df.신용도2],fill_color='lavender',align='left'))])
