@@ -7,7 +7,7 @@ import numpy as np
 import plotly.express as px
 # from main import total_graph
 from persist import persist, load_widget_state
-from catboost_model import preprocessing, train_model, result, zerone
+from catboost_model import preprocessing, train_model, result #, zerone
 from catboost import CatBoostClassifier # 05/28
 from io import BytesIO
 from datetime import datetime
@@ -37,28 +37,31 @@ def main():
             "multiselect": ["Hello", "Everyone"],
         })
 
-    page = st.sidebar.radio("Select your page", tuple(PAGES.keys()), format_func=str.capitalize)
+    page = st.sidebar.radio("페이지를 선택해주세요.", tuple(PAGES.keys()), format_func=str.capitalize)
     st.header("마이데이터를 활용한 신용도 예측 시스템")
+
     PAGES[page]()
 
 def login():
-    names = ['John Smith','Rebecca Briggs']
+    names = ['관리자']
     usernames = ['mulcam']
     passwords = ['123']
     hashed_passwords = stauth.Hasher(passwords).generate()
     authenticator = stauth.Authenticate(names,usernames,hashed_passwords,
     'some_cookie_name','some_signature_key',cookie_expiry_days=30)
-    name, authentication_status, username = authenticator.login('Login','main')
+    name, authentication_status, usernames = authenticator.login('Login','main')
 
     if authentication_status:
         st.write('환영합니다. *%s* 님 ' % (name))
+        st.info('*신용도는 0등급, 1등급, 2등급으로 분류되며 숫자가 낮을수록 신용도가 높습니다. \n\n *전체 화면을 권장하며, 그래프를 클릭하시면 더욱 자세히 볼 수 있습니다.')
+        # st.text('*전체 화면을 권장하며, 신용도를 클릭하시면 더욱 자세히 볼 수 있습니다.')
         st.write('Side bar에서 원하는 그래프 종류를 선택해주세요.')
         authenticator.logout('Logout', 'main')
         PAGES2[st.sidebar.radio("기업전용 카테고리", tuple(PAGES2.keys()), format_func=str.capitalize)]()
     elif authentication_status == False:
-        st.error('Username/password is incorrect')
+        st.error('아이디나 비밀번호가 일치하지 않습니다.')
     elif authentication_status == None:
-        st.warning('Please enter your username and password')
+        st.warning('아이디와 비밀번호를 입력해주세요.')
 
 # def column():
     # st.subheader('전체 표 보기: 신용도와 연관성')
@@ -355,7 +358,10 @@ def my_settings():
         if begin_month== '00/00':
             begin_month = 0
         else:
-            begin_month=int(begin_month[-2:])*12+int(begin_month[:2])-(datetime.today().year%100*12+datetime.today().month)
+            if begin_month == None:
+                st.warning('형식에 맞게 입력해 주세요.')
+            else:
+                begin_month=int(begin_month[-2:])*12+int(begin_month[:2])-(datetime.today().year%100*12+datetime.today().month)
 
         input_dict = dict(
             성별=gender,
@@ -430,8 +436,8 @@ def credit_graph():
     st.subheader('신용도와 연관된 전체 표 보기')
 
 
-    st.text('*신용도는 0등급, 1등급, 2등급으로 분류되며 숫자가 낮을수록 신용도가 높습니다.')
-    st.text('*전체 화면을 권장하며, 신용도를 클릭하시면 더욱 자세히 볼 수 있습니다.')
+    # st.text('*신용도는 0등급, 1등급, 2등급으로 분류되며 숫자가 낮을수록 신용도가 높습니다.')
+    # st.text('*전체 화면을 권장하며, 신용도를 클릭하시면 더욱 자세히 볼 수 있습니다.')
     # st.title('신용카드 사용자 신용도 예측 서비스')
     # DATA_PATH = ('./data/')
 
