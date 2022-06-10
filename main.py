@@ -619,7 +619,7 @@ def another_graph():
                 df = df.sort_values(by=["연령대"])
             elif col1 == '가족_규모':
                 df = df.sort_values(by=["가족_규모"])
-            fig = px.box(df, x=col1, y=col2, color_discrete_sequence=px.colors.qualitative.Pastel1, title=str(col1+' 별 연 소득 분포'))
+            fig = px.box(df,  width=700, x=col1, y=col2, color_discrete_sequence=px.colors.qualitative.Pastel1, title=str(col1+' 별 연 소득 분포'))
             st.plotly_chart(fig)
             # 수정 필요
 
@@ -629,7 +629,7 @@ def another_graph():
             family(df)
             if col1 == '연령대':
                 df = df.sort_values(by=["연령대"])
-            fig = px.box(df, x=col1, y=col2, color_discrete_sequence=px.colors.qualitative.Pastel1, title=str(col1+' 별 고용연수 분포'))
+            fig = px.box(df,  width=700, x=col1, y=col2, color_discrete_sequence=px.colors.qualitative.Pastel1, title=str(col1+' 별 고용연수 분포'))
             st.plotly_chart(fig)
 
     with column2:
@@ -639,7 +639,7 @@ def another_graph():
                 df = train.copy()
                 family(df)
                 df = df.groupby([col1], as_index=False).mean()
-                fig = px.bar(df, x=col1, y=col2, color_discrete_sequence=['rgb(141, 211, 199)'], title=str(col1+' 별 연 소득 평균'))
+                fig = px.bar(df, width=700, x=col1, y=col2, color_discrete_sequence=['rgb(141, 211, 199)'], title=str(col1+' 별 연 소득 평균'))
                 st.plotly_chart(fig)
         else:
             for col1, col2 in [[income_column, '소득']]:
@@ -647,7 +647,7 @@ def another_graph():
                 family(df)
                 df = df.groupby([col1], as_index=False).mean()
                 df = df.sort_values(by=[col2])
-                fig = px.bar(df,x=col1, y=col2, color_discrete_sequence=['rgb(141, 211, 199)'], title=str(col1+' 별 연 소득 평균'))
+                fig = px.bar(df, width=700, x=col1, y=col2, color_discrete_sequence=['rgb(141, 211, 199)'], title=str(col1+' 별 연 소득 평균'))
             st.plotly_chart(fig)
 
         
@@ -659,14 +659,14 @@ def another_graph():
                 df = train.copy()
                 family(df)
                 df = df.groupby([col1], as_index=False).mean()
-                fig = px.bar(df, x=col1, y=col2, color_discrete_sequence=['rgb(179, 205, 227)'], title=str(col1+' 별 고용연수 평균 비율'))
+                fig = px.bar(df,  width=700, x=col1, y=col2, color_discrete_sequence=['rgb(179, 205, 227)'], title=str(col1+' 별 고용연수 평균 비율'))
                 st.plotly_chart(fig)
         elif bar_column1:
             for col1, col2 in [[bar_column1, '고용연수']]:
                 df = train.copy()
                 df = df.groupby([col1], as_index=False).mean()
                 df = df.sort_values(by=[col2])
-                fig = px.bar(df,x=col1, y=col2, color_discrete_sequence=['rgb(179, 205, 227)'], title=str(col1+' 별 고용연수 평균 비율'))
+                fig = px.bar(df, width=700, x=col1, y=col2, color_discrete_sequence=['rgb(179, 205, 227)'], title=str(col1+' 별 고용연수 평균 비율'))
                 st.plotly_chart(fig)
         
 
