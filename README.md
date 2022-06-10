@@ -1,5 +1,10 @@
 # finalsite
 
+설치
+`git clone https://github.com/8bitHermitcrab/finalsite.git`
+사용법
+`streamlit run main.py`
+
 ## 👤구성원
 
 ### 조장
